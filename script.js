@@ -45,6 +45,7 @@ goalButton.addEventListener('click', () => {
     updateLog();
     goalScorer.value = '';
     goalAssist.value = '';
+	localStorage.setItem('goalTrackerData', timestamp, goalScorerName, goalAssistName);
   } else {
     alert('Please enter both goal scorer and assistant names.');
   }
@@ -59,6 +60,7 @@ resetButton.addEventListener('click', () => {
     updateLog();
     isRunning = false;
     startPauseButton.textContent = "Start";
+	localStorage.removeItem('timeTrackerData');
   }
 });
 
@@ -68,7 +70,6 @@ function updateLog() {
     const { timestamp, goalScorerName, goalAssistName } = entry;
     const logEntry = `${timestamp}: **Goal:** ${goalScorerName}, **Assist:** ${goalAssistName}`;
     log.innerHTML += `<p>${logEntry}</p>`;
-	localStorage.setItem('logTrackerData', text)
   });
 }
 
@@ -80,7 +81,7 @@ try {
 }
 
 try {
-  localStorage.setItem('logTrackerData', JSON.stringify(data));
+  localStorage.setItem('goalTrackerData', JSON.stringify(data));
 } catch (error) {
   console.error('Error storing data:', error);
 }
@@ -91,7 +92,7 @@ try {
   if (storedDataTime) {
     data = JSON.parse(storedDataTime);
     updateLog();
-	const storedDatalog = localStorage.getItem('logTrackerData');
+	const storedDatalog = localStorage.getItem('goalTrackerData');
   if (storedDataTime) {
     data = JSON.parse(storedDatalog);
     updateLog();
