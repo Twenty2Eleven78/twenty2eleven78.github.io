@@ -17,6 +17,7 @@ const elements = {
   resetButton: document.getElementById('resetButton'),
   log: document.getElementById('log'),
   goalForm: document.getElementById('goalForm')
+  shareButton: document.createElement('button')
 };
 
 // Constants
@@ -167,6 +168,11 @@ function resetTracker() {
 
 // Initialize application
 function initializeApp() {
+	
+  // Add share button to UI
+  createShareButton();	
+	
+	
   // Load saved data
   STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
   STATE.startTimestamp = Storage.load(STORAGE_KEYS.START_TIMESTAMP, null);
@@ -180,6 +186,8 @@ function initializeApp() {
     STATE.seconds = elapsedSeconds;
     startStopwatch();
   }
+  
+
   
   // Update UI with saved data
   updateStopwatchDisplay();
@@ -202,3 +210,78 @@ document.addEventListener('visibilitychange', () => {
     updateStopwatchDisplay();
   }
 });
+
+function formatLogForWhatsApp() {
+  const gameTime = formatTime(STATE.seconds);
+  const header = `⚽ Match Summary (Time: ${gameTime})\n\n`;
+  
+  const goals = STATE.data
+    .sort((a, b) => a.rawTime - b.rawTime)
+    .map(({ timestamp, goalScorerName, goalAssistName }) => 
+      `🎯 ${timestamp} - Goal: ${goalScorerName}, Assist: ${goalAssistName}`
+    )
+    .join('\n');
+    
+  const stats = generateStats();
+  return encodeURIComponent(`${header}${goals}\n\n${stats}`);
+}
+
+// Generate statistics summary
+function generateStats() {
+  const stats = new Map();
+  // Count goals
+  const goalScorers = new Map();
+  const assists = new Map();
+  
+  STATE.data.forEach(({ goalScorerName, goalAssistName }) => {
+    goalScorers.set(goalScorerName, (goalScorers.get(goalScorerName) || 0) + 1);
+    if (goalAssistName) {
+      assists.set(goalAssistName, (assists.get(goalAssistName) || 0) + 1);
+    }
+  });
+  
+  const topScorers = Array.from(goalScorers.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([name, goals]) => `${name}: ${goals}`)
+    .join(', ');
+    
+  const topAssists = Array.from(assists.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([name, assists]) => `${name}: ${assists}`)
+    .join(', ');
+  
+  return `📊 Stats:\nTop Scorers: ${topScorers}\nTop Assists: ${topAssists}`;
+}
+
+// Create and add share button to UI
+function createShareButton() {
+  const buttonContainer = document.createElement('div');
+  buttonContainer.className = 'row';
+  
+  const buttonCol = document.createElement('div');
+  buttonCol.className = 'col s12';
+  
+  elements.shareButton.className = 'btn waves-effect waves-light green';
+  elements.shareButton.innerHTML = '<i class="material-icons left">share</i>Share to WhatsApp';
+  elements.shareButton.addEventListener('click', shareToWhatsApp);
+  
+  buttonCol.appendChild(elements.shareButton);
+  buttonContainer.appendChild(buttonCol);
+  
+  // Insert before the reset button's row
+  elements.resetButton.closest('.row').before(buttonContainer);
+}
+
+// Share to WhatsApp function
+function shareToWhatsApp() {
+  if (STATE.data.length === 0) {
+    M.toast({html: 'No goals to share yet!'});
+    return;
+  }
+  
+  const formattedLog = formatLogForWhatsApp();
+  const whatsappURL = `https://wa.me/?text=${formattedLog}`;
+  window.open(whatsappURL, '_blank');
+}
