@@ -92,6 +92,12 @@ try {
   if (storedDataTime) {
     data = JSON.parse(storedDataTime);
     updateLog();
+  }
+} catch (error) {
+  console.error('Error retrieving data:', error);
+}
+
+try {
 	const storedDatalog = localStorage.getItem('goalTrackerData');
   if (storedDataTime) {
     data = JSON.parse(storedDatalog);
@@ -100,3 +106,4 @@ try {
 } catch (error) {
   console.error('Error retrieving data:', error);
 }
+
