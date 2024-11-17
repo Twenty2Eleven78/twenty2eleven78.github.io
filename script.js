@@ -51,13 +51,15 @@ goalButton.addEventListener('click', () => {
 });
 
 resetButton.addEventListener('click', () => {
-  clearInterval(intervalId);
-  seconds = 0;
-  stopwatchDisplay.textContent = '00:00:00';
-  data = [];
-  updateLog();
-  isRunning = false;
-  startPauseButton.textContent = "Start";
+  showConfirmationModal('Are you sure you want to reset the stopwatch and log data?', () => {
+    clearInterval(intervalId);
+    seconds = 0;
+    stopwatchDisplay.textContent = '00:00:00';
+    data = [];
+    updateLog();
+    isRunning = false;
+    startPauseButton.textContent = "Start";
+  });
 });
 
 function updateLog() {
@@ -97,6 +99,32 @@ function recordGoal() {
 
   // Scroll to the bottom of the log (optional)
   elements.log.scrollTop = elements.log.scrollHeight;
+}
+
+function showConfirmationModal(message, onConfirm) {
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+  modal.innerHTML = `
+    <div class="modal-content">
+      <p>${message}</p>
+      <button class="modal-confirm">Confirm</button>   
+
+      <button class="modal-cancel">Cancel</button>
+    </div>
+  `;
+
+  const confirmButton = modal.querySelector('.modal-confirm');
+  confirmButton.addEventListener('click', () => {
+    onConfirm();
+    document.body.removeChild(modal);
+  });
+
+  const cancelButton = modal.querySelector('.modal-cancel');
+  cancelButton.addEventListener('click', () => {
+    document.body.removeChild(modal);
+  });
+
+  document.body.appendChild(modal);
 }
 
 // Persist data to local storage
