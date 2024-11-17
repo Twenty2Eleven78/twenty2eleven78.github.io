@@ -16,7 +16,7 @@ function startStopwatch() {
       seconds++;
       const formattedTime = formatTime(seconds);
       stopwatchDisplay.textContent = formattedTime;
-	  sessionStorage.setItem('stopwatchTime', seconds)
+	  localStorage.setItem('timeTrackerData', seconds);
     }, 1000);
     isRunning = true;
   } else {
@@ -45,7 +45,6 @@ goalButton.addEventListener('click', () => {
     updateLog();
     goalScorer.value = '';
     goalAssist.value = '';
-	sessionStorage.setItem('goalTrackerData', JSON.stringify(data));
   } else {
     alert('Please enter both goal scorer and assistant names.');
   }
@@ -60,7 +59,6 @@ resetButton.addEventListener('click', () => {
     updateLog();
     isRunning = false;
     startPauseButton.textContent = "Start";
-	localStorage.removeItem('timeTrackerData');
   }
 });
 
@@ -70,40 +68,24 @@ function updateLog() {
     const { timestamp, goalScorerName, goalAssistName } = entry;
     const logEntry = `${timestamp}: **Goal:** ${goalScorerName}, **Assist:** ${goalAssistName}`;
     log.innerHTML += `<p>${logEntry}</p>`;
+	localStorage.setItem('logTrackerData', text)
   });
 }
 
 // Persist data to local storage
 try {
-  sessionStorage.setItem('stopwatchTime', seconds);
-} catch (error) {
-  console.error('Error storing data:', error);
-}
-
-try {
-  localStorage.setItem('goalTrackerData', JSON.stringify(data));
+  localStorage.setItem('timeTrackerData', JSON.stringify(data));
 } catch (error) {
   console.error('Error storing data:', error);
 }
 
 // Retrieve data from local storage on page load
 try {
-  const storedTime = sessionStorage.getItem('stopwatchTime');
-  if (storedTime) {
-    data = JSON.parse(storedTime);
+  const storedData = localStorage.getItem('timeTrackerData');
+  if (storedData) {
+    data = JSON.parse(storedData);
     updateLog();
   }
 } catch (error) {
   console.error('Error retrieving data:', error);
 }
-
-try {
-	const storedDataGoals = JSON.parse(sessionStorage.getItem('goalTrackerData'))
-  if (storedDataGoals) {
-    data = JSON.parse(storedDataGoals);
-    updateLog();
-  }
-} catch (error) {
-  console.error('Error retrieving data:', error);
-}
-
