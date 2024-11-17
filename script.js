@@ -1,4 +1,5 @@
 const stopwatchDisplay = document.getElementById('stopwatch');
+const startPauseButton = document.getElementById('startPauseButton');
 const goalButton = document.getElementById('goalButton');
 const goalScorer = document.getElementById('goalScorer');
 const goalAssist = document.getElementById('goalAssist');
@@ -7,39 +8,47 @@ const log = document.getElementById('log');
 
 let seconds = 0;
 let intervalId;
+let isRunning = false;
 
 function startStopwatch() {
-  intervalId = setInterval(() => {
-    seconds++;
-    const formattedTime = formatTime(seconds);
-    stopwatchDisplay.textContent = formattedTime;
-  }, 1000);
+  if (!isRunning) {
+    intervalId = setInterval(() => {
+      seconds++;
+      const formattedTime = formatTime(seconds);
+      stopwatchDisplay.textContent = formattedTime;
+    }, 1000);
+    isRunning = true;
+    startPauseButton.textContent = "Pause";
+  } else {
+    clearInterval(intervalId);
+    isRunning = false;
+    startPauseButton.textContent = "Start";
+  }
 }
 
 function formatTime(seconds) {
   const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
+  const minutes = Math.floor((seconds % 3600)   
+ / 60);
   const secs = seconds % 60;
-  return 
- `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2,'0')}`;
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2,   
+ '0')}`;
 }
 
-startStopwatch();
-let data = [];
+startPauseButton.addEventListener('click', startStopwatch);
 
 goalButton.addEventListener('click', () => {
-  const timestamp = new Date().toISOString();
+  const timestamp = stopwatchDisplay.textContent;
   const goalScorerName = goalScorer.value;
   const goalAssistName = goalAssist.value;
 
-  // Input validation
   if (goalScorerName.trim() !== '' && goalAssistName.trim() !== '') {
     data.push({ timestamp, goalScorerName, goalAssistName });
     updateLog();
     goalScorer.value = '';
     goalAssist.value = '';
   } else {
-    alert('Please enter both goal scorer and goal assist names.');
+    alert('Please enter both goal scorer and assistant names.');
   }
 });
 
@@ -49,13 +58,15 @@ resetButton.addEventListener('click', () => {
   stopwatchDisplay.textContent = '00:00:00';
   data = [];
   updateLog();
+  isRunning = false;
+  startPauseButton.textContent = "Start";
 });
 
 function updateLog() {
   log.innerHTML = '';
   data.forEach(entry => {
     const { timestamp, goalScorerName, goalAssistName } = entry;
-    const logEntry = `${timestamp}: ${goalScorerName} - ${goalAssistName}`;
+    const logEntry = `${timestamp}: **Goal:** ${goalScorerName}, **Assist:** ${goalAssistName}`;
     log.innerHTML += `<p>${logEntry}</p>`;
   });
 }
