@@ -32,3 +32,12 @@ select, input {
 #log {
   margin-top: 20px;
 }
+
+.stopwatch-container {
+  display: flex;
+  align-items: center;
+}
+
+#stopwatch {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
