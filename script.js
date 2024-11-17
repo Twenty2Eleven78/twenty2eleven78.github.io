@@ -52,15 +52,13 @@ goalButton.addEventListener('click', () => {
 });
 
 resetButton.addEventListener('click', () => {
-  if (confirm("Are you sure you want to reset the game?")) {
-    clearInterval(intervalId);
-    seconds = 0;
-    stopwatchDisplay.textContent = '00:00:00';
-    data = [];
-    updateLog();
-    isRunning = false;
-    startPauseButton.textContent = "Start";
-  }
+  clearInterval(intervalId);
+  seconds = 0;
+  stopwatchDisplay.textContent = '00:00:00';
+  data = [];
+  updateLog();
+  isRunning = false;
+  startPauseButton.textContent = "Start";
 });
 
 function updateLog() {
