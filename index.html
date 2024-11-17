@@ -9,20 +9,23 @@
     .main-content {
       margin-top: 64px; /* Adjust this value to match your app bar height */
     }
+	.mdc-button {
+  --mdc-theme-primary: #8B0000; /* Red */
+  --mdc-theme-on-primary: #ffffff;
+}
   </style>
 </head>
 
 <body>
-  <header class="mdc-top-app-bar">
-    <div class="mdc-top-app-bar__row">
-      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <span class="mdc-top-app-bar__title">Goal Tracker</span>
-      </section>
-    </div>
-  </header>
-
   <main class="mdc-layout-grid">
     <div class="mdc-layout-grid__inner">
+	  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div class="mdc-top-app-bar">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <span class="mdc-top-app-bar__title">Goal Tracker</span>
+		</section>
+      </div>
+	  </div>
       <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <div class="mdc-card">
           <div class="mdc-card__primary">
