@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Goal Tracker</title>
   <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-  <style>
-    .content-container {
-      margin-top: 64px; /* Adjust this value based on your app bar height */
+  <style> 
+    .main-content {
+      margin-top: 64px; /* Adjust this value to match your app bar height */
     }
   </style>
 </head>
@@ -29,7 +29,7 @@
             <h2 class="mdc-card__title">Stopwatch</h2>
           </div>
           <div class="mdc-card__actions">
-            <button class="mdc-button mdc-button--raised">Start/Pause</button>
+            <button class="mdc-button mdc-button--raised" id="startPauseButton">Start</button>
             <h5 id="stopwatch">00:00:00</h5>
           </div>
         </div>
