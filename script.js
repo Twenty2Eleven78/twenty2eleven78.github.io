@@ -68,6 +68,7 @@ function updateLog() {
     const { timestamp, goalScorerName, goalAssistName } = entry;
     const logEntry = `${timestamp}: **Goal:** ${goalScorerName}, **Assist:** ${goalAssistName}`;
     log.innerHTML += `<p>${logEntry}</p>`;
+	localStorage.setItem('logTrackerData', text)
   });
 }
 
@@ -78,11 +79,21 @@ try {
   console.error('Error storing data:', error);
 }
 
+try {
+  localStorage.setItem('logTrackerData', JSON.stringify(data));
+} catch (error) {
+  console.error('Error storing data:', error);
+}
+
 // Retrieve data from local storage on page load
 try {
-  const storedData = localStorage.getItem('timeTrackerData');
-  if (storedData) {
-    data = JSON.parse(storedData);
+  const storedDataTime = localStorage.getItem('timeTrackerData');
+  if (storedDataTime) {
+    data = JSON.parse(storedDataTime);
+    updateLog();
+	const storedDatalog = localStorage.getItem('logTrackerData');
+  if (storedDataTime) {
+    data = JSON.parse(storedDatalog);
     updateLog();
   }
 } catch (error) {
