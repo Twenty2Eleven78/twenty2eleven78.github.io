@@ -48,6 +48,8 @@ button {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  overflow-y: scroll; /* Enable scrolling for long logs */
+  max-height: 200px; /* Adjust max height as needed */
 }
 
 /* Mobile-specific styles */
