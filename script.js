@@ -1,16 +1,16 @@
-const startButton = document.getElementById('startButton');
-const nameSelect = document.getElementById('nameSelect');
-const assistantNameInput = document.getElementById('assistantName');
+const goalButton = document.getElementById('goalButton');
+const goalScorer = document.getElementById('goalScorer');
+const goalAssist = document.getElementById('goalAssist');
 const resetButton = document.getElementById('resetButton');
 const log = document.getElementById('log');
 
 let data = [];
 
-startButton.addEventListener('click', () => {
+goalButton.addEventListener('click', () => {
     const timestamp = new Date().toISOString();
-    const name = nameSelect.value;
-    const assistantName = assistantNameInput.value;
-    data.push({ timestamp, name, assistantName });
+    const goalScorerName = goalScorer.value;
+    const goalAssistName = goalAssist.value;
+    data.push({ timestamp, goalScorerName, goalAssistName });
     updateLog();
 });
 
@@ -22,11 +22,8 @@ resetButton.addEventListener('click', () => {
 function updateLog() {
     log.innerHTML = '';
     data.forEach(entry => {
-        const { timestamp, name, assistantName } = entry;
-        const logEntry = `${timestamp}: ${name}`;
-        if (assistantName) {
-            logEntry += ` - Assistant: ${assistantName}`;
-        }
+        const { timestamp, goalScorerName, goalAssistName } = entry;
+        const logEntry = `${timestamp}: ${goalScorerName}`${goalAssistName};
         log.innerHTML += `<p>${logEntry}</p>`;
     });
 }
