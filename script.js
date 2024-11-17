@@ -3,7 +3,9 @@ const STATE = {
   seconds: 0,
   isRunning: false,
   intervalId: null,
-  data: []
+  data: [],
+  startTime: null,
+  lastTickTime: null
 };
 
 // DOM Elements
@@ -22,7 +24,9 @@ const elements = {
 const STORAGE_KEYS = {
   TIME: 'goalTracker_time',
   GOALS: 'goalTracker_goals',
-  IS_RUNNING: 'goalTracker_isRunning'
+  IS_RUNNING: 'goalTracker_isRunning',
+  START_TIME: 'goalTracker_startTime',
+  LAST_TICK: 'goalTracker_lastTick'
 };
 
 // Local Storage utilities
@@ -66,16 +70,37 @@ function updateStopwatchDisplay() {
   Storage.save(STORAGE_KEYS.TIME, STATE.seconds);
 }
 
+function updateTime() {
+  if (!STATE.isRunning) return;
+  
+  const now = Date.now();
+  if (STATE.lastTickTime) {
+    const elapsed = Math.floor((now - STATE.lastTickTime) / 1000);
+    if (elapsed >= 1) {
+      STATE.seconds += elapsed;
+      STATE.lastTickTime = now;
+      updateStopwatchDisplay();
+      Storage.save(STORAGE_KEYS.LAST_TICK, now);
+    }
+  } else {
+    STATE.lastTickTime = now;
+    Storage.save(STORAGE_KEYS.LAST_TICK, now);
+  }
+}
+
 function startStopwatch() {
   if (!STATE.isRunning) {
-    STATE.intervalId = setInterval(() => {
-      STATE.seconds++;
-      updateStopwatchDisplay();
-    }, 1000);
     STATE.isRunning = true;
+    STATE.startTime = STATE.startTime || Date.now();
+    STATE.lastTickTime = Date.now();
+    STATE.intervalId = setInterval(updateTime, 100); // More frequent updates for accuracy
+    Storage.save(STORAGE_KEYS.START_TIME, STATE.startTime);
+    Storage.save(STORAGE_KEYS.LAST_TICK, STATE.lastTickTime);
   } else {
     clearInterval(STATE.intervalId);
     STATE.isRunning = false;
+    STATE.lastTickTime = null;
+    Storage.save(STORAGE_KEYS.LAST_TICK, null);
   }
   
   elements.startPauseButton.textContent = STATE.isRunning ? "Pause" : "Start";
@@ -134,6 +159,8 @@ function resetTracker() {
   STATE.seconds = 0;
   STATE.isRunning = false;
   STATE.data = [];
+  STATE.startTime = null;
+  STATE.lastTickTime = null;
   
   // Reset UI
   updateStopwatchDisplay();
@@ -150,13 +177,22 @@ function initializeApp() {
   STATE.seconds = Storage.load(STORAGE_KEYS.TIME, 0);
   STATE.data = Storage.load(STORAGE_KEYS.GOALS, []);
   STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
+  STATE.startTime = Storage.load(STORAGE_KEYS.START_TIME, null);
+  STATE.lastTickTime = Storage.load(STORAGE_KEYS.LAST_TICK, null);
   
   // Update UI with saved data
   updateStopwatchDisplay();
   updateLog();
   
-  if (STATE.isRunning) {
-    startStopwatch();
+  // If the timer was running when the page was closed/refreshed
+  if (STATE.isRunning && STATE.lastTickTime) {
+    const now = Date.now();
+    const elapsed = Math.floor((now - STATE.lastTickTime) / 1000);
+    if (elapsed > 0) {
+      STATE.seconds += elapsed;
+      updateStopwatchDisplay();
+    }
+    startStopwatch(); // Restart the timer
   }
   
   // Initialize Materialize components
@@ -171,17 +207,30 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 
 // Handle page visibility changes
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && STATE.isRunning) {
-    clearInterval(STATE.intervalId);
-  } else if (!document.hidden && STATE.isRunning) {
-    const now = Date.now();
-    const lastTime = Storage.load('lastTimestamp');
-    if (lastTime) {
-      const timeDiff = Math.floor((now - lastTime) / 1000);
-      STATE.seconds += timeDiff;
-      updateStopwatchDisplay();
+  if (document.hidden) {
+    if (STATE.isRunning) {
+      clearInterval(STATE.intervalId); // Clear the interval but keep the state running
+      Storage.save(STORAGE_KEYS.LAST_TICK, Date.now());
     }
-    startStopwatch();
+  } else {
+    if (STATE.isRunning) {
+      const now = Date.now();
+      const lastTick = Storage.load(STORAGE_KEYS.LAST_TICK);
+      if (lastTick) {
+        const elapsed = Math.floor((now - lastTick) / 1000);
+        STATE.seconds += elapsed;
+        updateStopwatchDisplay();
+      }
+      STATE.lastTickTime = now;
+      STATE.intervalId = setInterval(updateTime, 100);
+      Storage.save(STORAGE_KEYS.LAST_TICK, now);
+    }
   }
-  Storage.save('lastTimestamp', Date.now());
 });
+
+// Backup interval for longer running times
+setInterval(() => {
+  if (STATE.isRunning) {
+    Storage.save(STORAGE_KEYS.TIME, STATE.seconds);
+  }
+}, 1000);
