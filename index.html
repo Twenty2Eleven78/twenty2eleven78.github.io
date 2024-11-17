@@ -4,101 +4,92 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Goal Tracker</title>
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-  <style> 
-    .main-content {
-      margin-top: 64px; /* Adjust this value to match your app bar height */
-    }
-	.mdc-button {
-  --mdc-theme-primary: #8B0000; /* Red */
-  --mdc-theme-on-primary: #ffffff;
-}
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
-
 <body>
-  <main class="mdc-layout-grid">
-    <div class="mdc-layout-grid__inner">
-	  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div class="mdc-top-app-bar">
-          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <span class="mdc-top-app-bar__title">Goal Tracker</span>
-		</section>
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <h4>Goal Tracker</h4>
       </div>
-	  </div>
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div class="mdc-card">
-          <div class="mdc-card__primary">
-            <h2 class="mdc-card__title">Stopwatch</h2>
-          </div>
-          <div class="mdc-card__actions">
-            <button class="mdc-button mdc-button--raised" id="startPauseButton">Start</button>
-            <h5 id="stopwatch">00:00:00</h5>
+    </div>
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Stopwatch</span>
+            <div class="center-align">
+              <button class="btn waves-effect waves-light red" id="startPauseButton">Start</button>
+              <h5 id="stopwatch">00:00:00</h5>
+            </div>
           </div>
         </div>
       </div>
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div class="mdc-card">
-          <div class="mdc-card__primary">
-            <h2 class="mdc-card__title">Add Goal</h2>
-          </div>
-          <div class="mdc-card__actions">
-            <div class="mdc-text-field">
-              <label for="goalScorer">Goal Scorer</label>
-              <select class="mdc-select" id="goalScorer">
+      <div class="col s12 ">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Add Goal</span>
+            <div class="input-field">
+			<label>Goal Scorer:</label>
+              <select id="goalScorer">
                 <option value="">Select a scorer</option>
                 <option value="AS">AS</option>
                 <option value="ARO">ARO</option>
                 <option value="DP">DP</option>
                 <option value="ED">ED</option>
-                <option value="EV">EV</option>
-                <option value="EM">EM</option>
-                <option value="FA">FA</option>
-                <option value="FK">FK</option>
-                <option value="HS">HS</option>
-                <option value="MF">MF</option>
-                <option value="ML">ML</option>
-                <option value="RA">RA</option>
-                <option value="SS">SS</option>
-                <option value="TR">TR</option>
-                <option value="VAI">VAI</option>
-                </select>
-            </div>
-            <div class="mdc-text-field">
-              <label for="goalAssist">Goal Assist</label>
-              <select class="mdc-select" id="goalAssist">
+				<option value="EV">EV</option>
+				<option value="EM">EM</option>
+				<option value="FA">FA</option>
+				<option value="FK">FK</option>
+				<option value="HS">HS</option>
+				<option value="MF">MF</option>
+				<option value="ML">ML</option>
+				<option value="RA">RA</option>
+				<option value="SS">SS</option>
+				<option value="TR">TR</option>
+				<option value="VAI">VAI</option>
+			  </select>
+              </div>
+            <div class="input-field">
+			<label>Goal Assist:</label>
+              <select id="goalAssist">
                 <option value="">Select an assistant</option>
                 <option value="AS">AS</option>
                 <option value="ARO">ARO</option>
                 <option value="DP">DP</option>
                 <option value="ED">ED</option>
-                <option value="EV">EV</option>
-                <option value="EM">EM</option>
-                <option value="FA">FA</option>
-                <option value="FK">FK</option>
-                <option value="HS">HS</option>
-                <option value="MF">MF</option>
-                <option value="ML">ML</option>
-                <option value="RA">RA</option>
-                <option value="SS">SS</option>
-                <option value="TR">TR</option>
-                <option value="VAI">VAI</option>
-                </select>
-            </div>
-            <button class="mdc-button mdc-button--raised">Add Goal</button>
+				<option value="EV">EV</option>
+				<option value="EM">EM</option>
+				<option value="FA">FA</option>
+				<option value="FK">FK</option>
+				<option value="HS">HS</option>
+				<option value="MF">MF</option>
+				<option value="ML">ML</option>
+				<option value="RA">RA</option>
+				<option value="SS">SS</option>
+				<option value="TR">TR</option>
+				<option value="VAI">VAI</option>
+              </select>
+             </div>
+            <button class="btn waves-effect waves-light red" id="goalButton">Add Goal</button>
           </div>
         </div>
       </div>
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <h2>Goal Log</h2>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <h4>Goal Log</h4>
         <div id="log"></div>
       </div>
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <button class="mdc-button mdc-button--raised mdc-button--danger">Reset</button>
-
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <button class="btn waves-effect waves-light red" id="resetButton">Reset</button>
       </div>
     </div>
-  </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
