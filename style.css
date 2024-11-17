@@ -24,6 +24,7 @@ select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 18px; /* Adjust font size as needed */
 }
 
 button {
@@ -33,7 +34,13 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 18px; /* Adjust font size as needed */
 
+}
+
+.goal-input-container {
+  /* ... other styles ... */
+  line-height: 2.5em; /* Adjust line height for more spacing */
 }
 
 #log {
@@ -52,7 +59,7 @@ button {
 
   /* Make elements more mobile-friendly */
   button, select {
-    font-size: 14px;
+    font-size: 18px;
     padding: 8px 12px;
   }
 
@@ -62,4 +69,5 @@ button {
     flex-direction: column;
     align-items: center;
   }
+  
 }
