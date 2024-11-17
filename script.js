@@ -16,7 +16,7 @@ function startStopwatch() {
       seconds++;
       const formattedTime = formatTime(seconds);
       stopwatchDisplay.textContent = formattedTime;
-	  localStorage.setItem('stopwatchTime', seconds);
+	  localStorage.setItem('timeTrackerData', seconds);
     }, 1000);
     isRunning = true;
   } else {
@@ -31,12 +31,6 @@ function formatTime(seconds) {
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2,'0')}`;
-}
-
-const storedTime = localStorage.getItem('stopwatchTime');
-if (storedTime) {
-  seconds = parseInt(storedTime);
-  document.getElementById('stopwatch').textContent = formatTime(seconds);
 }
 
 startPauseButton.addEventListener('click', startStopwatch);
