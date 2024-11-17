@@ -3,26 +3,27 @@
 <head>
   <title>Game Goal Tracker</title>
   <link rel="stylesheet" href="style.css">
-  <title>Goal Tracker</title>
 </head>
 <body>
   <header>
     <h1>Game Goal Tracker</h1>
   </header>
   <main>
-  <div id="stopwatch">00:00:00</div>
-  <button id="startPauseButton">Start</button>
-  <label for="goalScorer">Goal Scorer:</label>
-  <input type="text" id="goalScorer" placeholder="Enter goal scorer">
-  <br>
-  <label for="goalAssist">Goal Assist:</label>
-  <input type="text" id="goalAssist" placeholder="Enter goal assist">
-  <br>
-  <button id="goalButton">Add Goal</button>
-  <div id="log"></div>
-  <button id="resetButton">Reset</button>
+    <div class="stopwatch-container">
+      <div id="stopwatch">00:00:00</div>
+      <button id="startPauseButton">Start</button>
+    </div>
+    <div class="goal-input-container">
+      <label for="goalScorer">Goal Scorer:</label>
+      <input type="text" id="goalScorer" placeholder="Enter goal scorer">
+      <br>
+      <label for="goalAssist">Goal Assist:</label>
+      <input type="text" id="goalAssist" placeholder="Enter goal assist">
+    </div>
+    <button id="goalButton">Add Goal</button>
+    <div id="log"></div>
+    <button id="resetButton">Reset</button>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>
