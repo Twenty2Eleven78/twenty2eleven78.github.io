@@ -18,12 +18,11 @@ function startStopwatch() {
       stopwatchDisplay.textContent = formattedTime;
     }, 1000);
     isRunning = true;
-    startPauseButton.textContent = "Pause";
   } else {
     clearInterval(intervalId);
     isRunning = false;
-    startPauseButton.textContent = "Start";
   }
+  startPauseButton.textContent = isRunning ? "Pause" : "Start";
 }
 
 function formatTime(seconds) {
@@ -69,52 +68,6 @@ function updateLog() {
     const logEntry = `${timestamp}: **Goal:** ${goalScorerName}, **Assist:** ${goalAssistName}`;
     log.innerHTML += `<p>${logEntry}</p>`;
   });
-}
-
-function recordGoal() {
-  if (!selectedScorer || !selectedAssist) return;
-
-  const timestamp = elements.stopwatch.textContent;
-  const goalData = {
-    timestamp,
-    scorer: selectedScorer,
-    assist: selectedAssist
-  };
-
-  // Append goal data to the log
-  const logEntry = document.createElement('div');
-  logEntry.classList.add('goal-entry');
-  logEntry.innerHTML = `
-    <div class="goal-time">${timestamp}</div>
-    <div class="goal-scorer">⚽ ${selectedScorer.number} ${selectedScorer.name}</div>
-    <div class="goal-assist">👟 ${selectedAssist.number} ${selectedAssist.name}</div>
-  `;
-  elements.log.appendChild(logEntry);
-
-  // Clear selected players
-  selectedScorer = null;
-  selectedAssist = null;
-  elements.selectedScorer.value = '';
-  elements.selectedAssist.value = '';
-
-  // Scroll to the bottom of the log (optional)
-  elements.log.scrollTop = elements.log.scrollHeight;
-}
-
-
-
-  const confirmButton = modal.querySelector('.modal-confirm');
-  confirmButton.addEventListener('click', () => {
-    onConfirm();
-    document.body.removeChild(modal);
-  });
-
-  const cancelButton = modal.querySelector('.modal-cancel');
-  cancelButton.addEventListener('click', () => {
-    document.body.removeChild(modal);
-  });
-
-  document.body.appendChild(modal);
 }
 
 // Persist data to local storage
