@@ -4,8 +4,7 @@ const STATE = {
   isRunning: false,
   intervalId: null,
   data: [],
-  startTime: null,
-  lastTickTime: null
+  startTimestamp: null
 };
 
 // DOM Elements
@@ -22,11 +21,10 @@ const elements = {
 
 // Constants
 const STORAGE_KEYS = {
-  TIME: 'goalTracker_time',
-  GOALS: 'goalTracker_goals',
+  START_TIMESTAMP: 'goalTracker_startTimestamp',
   IS_RUNNING: 'goalTracker_isRunning',
-  START_TIME: 'goalTracker_startTime',
-  LAST_TICK: 'goalTracker_lastTick'
+  GOALS: 'goalTracker_goals',
+  ELAPSED_TIME: 'goalTracker_elapsedTime'
 };
 
 // Local Storage utilities
@@ -64,47 +62,43 @@ function formatTime(seconds) {
     .join(':');
 }
 
-// Stopwatch controls
-function updateStopwatchDisplay() {
-  elements.stopwatch.textContent = formatTime(STATE.seconds);
-  Storage.save(STORAGE_KEYS.TIME, STATE.seconds);
+function getCurrentSeconds() {
+  if (!STATE.isRunning || !STATE.startTimestamp) return STATE.seconds;
+  
+  const currentTime = Date.now();
+  const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000);
+  return elapsedSeconds;
 }
 
-function updateTime() {
-  if (!STATE.isRunning) return;
-  
-  const now = Date.now();
-  if (STATE.lastTickTime) {
-    const elapsed = Math.floor((now - STATE.lastTickTime) / 1000);
-    if (elapsed >= 1) {
-      STATE.seconds += elapsed;
-      STATE.lastTickTime = now;
-      updateStopwatchDisplay();
-      Storage.save(STORAGE_KEYS.LAST_TICK, now);
-    }
-  } else {
-    STATE.lastTickTime = now;
-    Storage.save(STORAGE_KEYS.LAST_TICK, now);
-  }
+// Stopwatch controls
+function updateStopwatchDisplay() {
+  const currentSeconds = getCurrentSeconds();
+  elements.stopwatch.textContent = formatTime(currentSeconds);
+  STATE.seconds = currentSeconds;
+  Storage.save(STORAGE_KEYS.ELAPSED_TIME, currentSeconds);
 }
 
 function startStopwatch() {
   if (!STATE.isRunning) {
+    // Starting the timer
     STATE.isRunning = true;
-    STATE.startTime = STATE.startTime || Date.now();
-    STATE.lastTickTime = Date.now();
-    STATE.intervalId = setInterval(updateTime, 100); // More frequent updates for accuracy
-    Storage.save(STORAGE_KEYS.START_TIME, STATE.startTime);
-    Storage.save(STORAGE_KEYS.LAST_TICK, STATE.lastTickTime);
+    if (!STATE.startTimestamp) {
+      STATE.startTimestamp = Date.now() - (STATE.seconds * 1000);
+    }
+    STATE.intervalId = setInterval(updateStopwatchDisplay, 100);
   } else {
+    // Pausing the timer
     clearInterval(STATE.intervalId);
     STATE.isRunning = false;
-    STATE.lastTickTime = null;
-    Storage.save(STORAGE_KEYS.LAST_TICK, null);
+    STATE.seconds = getCurrentSeconds();
+    STATE.startTimestamp = null;
   }
   
+  // Update UI and save state
   elements.startPauseButton.textContent = STATE.isRunning ? "Pause" : "Start";
   Storage.save(STORAGE_KEYS.IS_RUNNING, STATE.isRunning);
+  Storage.save(STORAGE_KEYS.START_TIMESTAMP, STATE.startTimestamp);
+  Storage.save(STORAGE_KEYS.ELAPSED_TIME, STATE.seconds);
 }
 
 // Goal tracking
@@ -119,11 +113,12 @@ function addGoal(event) {
     return;
   }
   
+  const currentSeconds = getCurrentSeconds();
   const goalData = {
-    timestamp: formatTime(STATE.seconds),
+    timestamp: formatTime(currentSeconds),
     goalScorerName,
     goalAssistName,
-    rawTime: STATE.seconds
+    rawTime: currentSeconds
   };
   
   STATE.data.push(goalData);
@@ -159,8 +154,7 @@ function resetTracker() {
   STATE.seconds = 0;
   STATE.isRunning = false;
   STATE.data = [];
-  STATE.startTime = null;
-  STATE.lastTickTime = null;
+  STATE.startTimestamp = null;
   
   // Reset UI
   updateStopwatchDisplay();
@@ -174,26 +168,23 @@ function resetTracker() {
 // Initialize application
 function initializeApp() {
   // Load saved data
-  STATE.seconds = Storage.load(STORAGE_KEYS.TIME, 0);
-  STATE.data = Storage.load(STORAGE_KEYS.GOALS, []);
   STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
-  STATE.startTime = Storage.load(STORAGE_KEYS.START_TIME, null);
-  STATE.lastTickTime = Storage.load(STORAGE_KEYS.LAST_TICK, null);
+  STATE.startTimestamp = Storage.load(STORAGE_KEYS.START_TIMESTAMP, null);
+  STATE.seconds = Storage.load(STORAGE_KEYS.ELAPSED_TIME, 0);
+  STATE.data = Storage.load(STORAGE_KEYS.GOALS, []);
+  
+  // If timer was running, calculate elapsed time and restart
+  if (STATE.isRunning && STATE.startTimestamp) {
+    const currentTime = Date.now();
+    const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000);
+    STATE.seconds = elapsedSeconds;
+    startStopwatch();
+  }
   
   // Update UI with saved data
   updateStopwatchDisplay();
   updateLog();
-  
-  // If the timer was running when the page was closed/refreshed
-  if (STATE.isRunning && STATE.lastTickTime) {
-    const now = Date.now();
-    const elapsed = Math.floor((now - STATE.lastTickTime) / 1000);
-    if (elapsed > 0) {
-      STATE.seconds += elapsed;
-      updateStopwatchDisplay();
-    }
-    startStopwatch(); // Restart the timer
-  }
+  elements.startPauseButton.textContent = STATE.isRunning ? "Pause" : "Start";
   
   // Initialize Materialize components
   M.FormSelect.init(document.querySelectorAll('select'));
@@ -207,30 +198,7 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 
 // Handle page visibility changes
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    if (STATE.isRunning) {
-      clearInterval(STATE.intervalId); // Clear the interval but keep the state running
-      Storage.save(STORAGE_KEYS.LAST_TICK, Date.now());
-    }
-  } else {
-    if (STATE.isRunning) {
-      const now = Date.now();
-      const lastTick = Storage.load(STORAGE_KEYS.LAST_TICK);
-      if (lastTick) {
-        const elapsed = Math.floor((now - lastTick) / 1000);
-        STATE.seconds += elapsed;
-        updateStopwatchDisplay();
-      }
-      STATE.lastTickTime = now;
-      STATE.intervalId = setInterval(updateTime, 100);
-      Storage.save(STORAGE_KEYS.LAST_TICK, now);
-    }
+  if (!document.hidden && STATE.isRunning) {
+    updateStopwatchDisplay();
   }
 });
-
-// Backup interval for longer running times
-setInterval(() => {
-  if (STATE.isRunning) {
-    Storage.save(STORAGE_KEYS.TIME, STATE.seconds);
-  }
-}, 1000);
