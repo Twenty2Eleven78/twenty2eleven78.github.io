@@ -50,7 +50,18 @@ goalButton.addEventListener('click', () => {
   }
 });
 
-let resetClickTime = null;
+function showConfirmationModal(message, onConfirm) {
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+  modal.innerHTML = `
+    <div class="modal-content">
+      <p>${message}</p>
+      <button class="modal-confirm">Confirm</button>   
+
+      <button class="modal-cancel">Cancel</button>
+    </div>
+  `;
+
 
 resetButton.addEventListener('click', () => {
   showConfirmationModal('Are you sure you want to reset the stopwatch and log data?', () => {
@@ -103,17 +114,7 @@ function recordGoal() {
   elements.log.scrollTop = elements.log.scrollHeight;
 }
 
-function showConfirmationModal(message, onConfirm) {
-  const modal = document.createElement('div');
-  modal.classList.add('modal');
-  modal.innerHTML = `
-    <div class="modal-content">
-      <p>${message}</p>
-      <button class="modal-confirm">Confirm</button>   
 
-      <button class="modal-cancel">Cancel</button>
-    </div>
-  `;
 
   const confirmButton = modal.querySelector('.modal-confirm');
   confirmButton.addEventListener('click', () => {
