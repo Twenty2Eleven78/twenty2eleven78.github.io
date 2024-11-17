@@ -1,41 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Game Goal Tracker</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Game Goal Tracker</title>
+    
+    <style>
+        /* Add a loading state style */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4299e1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Hide loading state once content is ready */
+        .loaded .loading {
+            display: none;
+        }
+        
+        /* Prevent content flash before JS loads */
+        .main-content {
+            display: none;
+        }
+        
+        .loaded .main-content {
+            display: block;
+        }
+    </style>
+    
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Game Goal Tracker</h1>
-  </header>
-  <main>
-    <div class="stopwatch-container">
-	<button id="startPauseButton">Start</button>
-	<div id="stopwatch">00:00:00</div>
-	</div>
-    <div class="goal-input-container">
-      <label for="goalScorer">Goal Scorer:</label>
-		<select id="goalScorer">
-			<option value="">Select a scorer</option>
-			<option value="F">F</option>
-			<option value="TR">TR</option>
-			<option value="A">A</option>
-			<option value="D">D</option>
-		</select>
-		<br>
-	  <label for="goalAssist">Goal Assist:</label>
-		<select id="goalAssist">
-			<option value="">Select an assistant</option>
-			<option value="F">F</option>
-			<option value="TR">TR</option>
-			<option value="A">A</option>
-			<option value="D">D</option>
-		</select>
+    <!-- Loading state -->
+    <div class="loading">
+        <div class="loading-spinner"></div>
     </div>
-    <button id="goalButton">Add Goal</button>
-    <div id="log"></div>
-    <button id="resetButton">Reset</button>
-  </main>
-  <script src="script.js"></script>
+    
+    <!-- Main content container -->
+    <div class="main-content">
+        <header>
+            <h1 class="text-2xl font-bold text-center p-4">Game Goal Tracker</h1>
+        </header>
+        
+        <main>
+            <div class="mobile-container">
+                <!-- Timer section -->
+                <div class="timer-section">
+                    <div id="stopwatch" class="stopwatch">00:00:00</div>
+                    <button id="startPauseButton" class="large-btn">Start</button>
+                </div>
+                
+                <!-- Player and Goals section -->
+                <div class="player-section">
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="roster">Roster</button>
+                        <button class="tab-btn" data-tab="goals">Goals</button>
+                    </div>
+                    
+                    <!-- Roster Tab -->
+                    <div id="rosterTab" class="tab-content active">
+                        <div class="roster-header">
+                            <h3>Team Roster</h3>
+                            <button id="addPlayerBtn" class="circle-btn">+</button>
+                        </div>
+                        <div id="rosterList" class="roster-list">
+                            <!-- Roster items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Goals Tab -->
+                    <div id="goalsTab" class="tab-content">
+                        <div id="log" class="goals-log">
+                            <!-- Goal entries will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Goal Actions Bottom Sheet -->
+                <div id="goalActions" class="goal-actions hidden">
+                    <div class="selected-players">
+                        <div id="selectedScorer" class="selected-player">Select Scorer</div>
+                        <div id="selectedAssist" class="selected-player">Select Assist</div>
+                    </div>
+                    <button id="confirmGoal" class="large-btn">Record Goal</button>
+                    <button id="cancelGoal" class="text-btn">Cancel</button>
+                </div>
+                
+                <!-- Add Player Dialog -->
+                <dialog id="playerDialog">
+                    <form method="dialog" class="player-form">
+                        <input type="text" id="playerName" placeholder="Player Name" required>
+                        <input type="number" id="playerNumber" placeholder="#" required>
+                        <div class="dialog-buttons">
+                            <button type="submit" class="confirm-btn">Add</button>
+                            <button type="button" id="cancelDialog" class="cancel-btn">Cancel</button>
+                        </div>
+                    </form>
+                </dialog>
+            </div>
+        </main>
+        
+        <!-- Reset Game Modal -->
+        <dialog id="resetDialog">
+            <div class="p-4">
+                <h3 class="text-lg font-bold mb-4">Reset Game?</h3>
+                <p class="mb-4">This will clear all goals and reset the timer. This action cannot be undone.</p>
+                <div class="dialog-buttons">
+                    <button id="confirmReset" class="confirm-btn">Reset</button>
+                    <button id="cancelReset" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </dialog>
+    </div>
+    
+    <!-- Add this script to handle loading state -->
+    <script>
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+    </script>
+    
+    <!-- Link to your external JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
