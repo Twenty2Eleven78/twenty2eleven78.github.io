@@ -1,0 +1,34 @@
+body {
+  font-family: Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #3f51b5;
+  color: white;
+  padding: 20px;
+}
+
+main {
+  padding: 20px;
+}
+
+button {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+select, input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#log {
+  margin-top: 20px;
+}
