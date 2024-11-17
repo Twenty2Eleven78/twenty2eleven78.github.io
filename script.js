@@ -16,7 +16,7 @@ function startStopwatch() {
       seconds++;
       const formattedTime = formatTime(seconds);
       stopwatchDisplay.textContent = formattedTime;
-	  localStorage.setItem('timeTrackerData', seconds);
+	  sessionStorage.setItem('stopwatchTime', seconds)
     }, 1000);
     isRunning = true;
   } else {
@@ -45,7 +45,7 @@ goalButton.addEventListener('click', () => {
     updateLog();
     goalScorer.value = '';
     goalAssist.value = '';
-	localStorage.setItem('goalTrackerData', timestamp, goalScorerName, goalAssistName);
+	sessionStorage.setItem('goalTrackerData', JSON.stringify(data));
   } else {
     alert('Please enter both goal scorer and assistant names.');
   }
@@ -75,7 +75,7 @@ function updateLog() {
 
 // Persist data to local storage
 try {
-  localStorage.setItem('timeTrackerData', JSON.stringify(data));
+  sessionStorage.setItem('stopwatchTime', seconds);
 } catch (error) {
   console.error('Error storing data:', error);
 }
@@ -88,9 +88,9 @@ try {
 
 // Retrieve data from local storage on page load
 try {
-  const storedDataTime = localStorage.getItem('timeTrackerData');
-  if (storedDataTime) {
-    data = JSON.parse(storedDataTime);
+  const storedTime = sessionStorage.getItem('stopwatchTime';
+  if (storedTime) {
+    data = JSON.parse(storedTime);
     updateLog();
   }
 } catch (error) {
@@ -98,7 +98,7 @@ try {
 }
 
 try {
-	const storedDataGoals = localStorage.getItem('goalTrackerData');
+	const storedDataGoals = JSON.parse(sessionStorage.getItem('goalTrackerData'))
   if (storedDataGoals) {
     data = JSON.parse(storedDataGoals);
     updateLog();
