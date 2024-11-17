@@ -1,126 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Game Goal Tracker</title>
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=sports_soccer" />
-    <link rel="stylesheet" href="style.css">
+  <title>Game Goal Tracker</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- App Bar -->
-    <header class="app-bar">
-		<span class="material-symbols-outlined">sports_soccer</span>
-        <h1>Goal Tracker</h1>
-    </header>
-
-    <!-- Main Content -->
-    <main class="mobile-container">
-        <!-- Timer Card -->
-        <section class="timer-section">
-            <div id="stopwatch" class="stopwatch">00:00:00</div>
-            <button id="startPauseButton" class="md-button contained ripple">
-                Start
-            </button>
-        </section>
-
-        <!-- Tabs -->
-        <nav class="tabs">
-            <button class="tab-btn active ripple" data-tab="roster">
-                Roster
-            </button>
-            <button class="tab-btn ripple" data-tab="goals">
-                Goals
-            </button>
-        </nav>
-
-        <!-- Content Sections -->
-        <section id="rosterTab" class="tab-content active">
-            <div id="rosterList" class="roster-list">
-                <button id="addPlayerBtn" class="md-fab ripple">
-        <span class="material-icons">add</span>
-            </div>
-        </section>
-
-        <section id="goalsTab" class="tab-content">
-            <div id="log" class="goals-log">
-                <!-- Goals will be added here -->
-            </div>
-        </section>
-
-        <!-- Bottom Sheet for Goal Actions -->
-        <div id="goalActions" class="bottom-sheet">
-            <div class="selected-players">
-                <div id="selectedScorer" class="md-field">
-                    <input type="text" readonly placeholder=" ">
-                    <label>Select Scorer</label>
-                </div>
-                <div id="selectedAssist" class="md-field">
-                    <input type="text" readonly placeholder=" ">
-                    <label>Select Assist</label>
-                </div>
-            </div>
-            <button id="confirmGoal" class="md-button contained ripple">Record Goal</button>
-            <button id="cancelGoal" class="md-button outlined ripple">Cancel</button>
-        </div>
-
-        <!-- Add Player Dialog -->
-        <dialog class="md-dialog">
-            <h2>Add New Player</h2>
-            <form id="playerForm">
-                <div class="md-field">
-                    <input type="text" id="playerName" required placeholder=" ">
-                    <label for="playerName">Player Name</label>
-                </div>
-                <div class="md-field">
-                    <input type="number" id="playerNumber" required placeholder=" ">
-                    <label for="playerNumber">Jersey Number</label>
-                </div>
-                <div class="dialog-actions">
-                    <button type="button" class="md-button outlined ripple" data-dismiss="dialog">Cancel</button>
-                    <button type="submit" class="md-button contained ripple">Add Player</button>
-                </div>
-            </form>
-        </dialog>
-
-        <!-- Reset Dialog -->
-        <dialog class="md-dialog" id="resetDialog">
-            <h2>Reset Game</h2>
-            <p>This will clear all goals and reset the timer. This action cannot be undone.</p>
-            <div class="dialog-actions">
-                <button class="md-button outlined ripple" data-dismiss="dialog">Cancel</button>
-                <button id="confirmReset" class="md-button contained ripple">Reset</button>
-            </div>
-        </dialog>
-    </main>
-
-    <!-- Snackbar -->
-    <div class="snackbar">
-        <span id="snackbarText"></span>
-        <button class="md-button outlined ripple">Dismiss</button>
+  <header>
+    <h1>Game Goal Tracker</h1>
+  </header>
+  <main>
+    <div class="stopwatch-container">
+	<button id="startPauseButton">Start</button>
+	<div id="stopwatch">00:00:00</div>
+	</div>
+    <div class="goal-input-container">
+      <label for="goalScorer">Goal Scorer:</label>
+		<select id="goalScorer">
+			<option value="">Select a scorer</option>
+			<option value="F">F</option>
+			<option value="TR">TR</option>
+			<option value="A">A</option>
+			<option value="D">D</option>
+		</select>
+		<br>
+	  <label for="goalAssist">Goal Assist:</label>
+		<select id="goalAssist">
+			<option value="">Select an assistant</option>
+			<option value="F">F</option>
+			<option value="TR">TR</option>
+			<option value="A">A</option>
+			<option value="D">D</option>
+		</select>
     </div>
-
-    <!-- Templates -->
-    <template id="playerCardTemplate">
-        <div class="player-card ripple">
-            <div class="player-info">
-                <span class="player-number"></span>
-                <span class="player-name"></span>
-            </div>
-            <div class="player-stats">
-                <span class="goals">
-                    <span class="material-icons">sports_soccer</span>
-                    <span class="count">0</span>
-                </span>
-                <span class="assists">
-                    <span class="material-icons">emoji_events</span>
-                    <span class="count">0</span>
-                </span>
-            </div>
-        </div>
-    </template>
-
-    <script src="script.js"></script>
+    <button id="goalButton">Add Goal</button>
+    <div id="log"></div>
+    <button id="resetButton">Reset</button>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
