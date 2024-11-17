@@ -4,312 +4,281 @@
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+:root {
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --primary-color: #4299e1;
+  --primary-dark: #3182ce;
+  --background-color: #f5f5f5;
+  --card-background: #ffffff;
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-tertiary: #666666;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --border-radius-sm: 8px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
   line-height: 1.6;
+  overflow-x: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
+/* Mobile container */
 .mobile-container {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 16px;
+  padding: 1rem;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Timer section */
 .timer-section {
   text-align: center;
-  padding: 24px 0;
-  background-color: #fff;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 1rem;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .stopwatch {
-  font-size: 48px;
+  font-size: clamp(2rem, 8vw, 3.5rem);
   font-weight: bold;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 16px;
-  color: #2d3748;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
-/* Buttons */
+/* Buttons with touch targets */
 .large-btn {
-  background-color: #4299e1;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 16px 32px;
-  font-size: 18px;
+  border-radius: var(--border-radius-md);
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  width: 80%;
+  width: 100%;
   max-width: 300px;
   cursor: pointer;
   transition: background-color 0.2s;
+  min-height: 3.5rem;
+  touch-action: manipulation;
 }
 
 .large-btn:active {
-  background-color: #3182ce;
+  background-color: var(--primary-dark);
   transform: scale(0.98);
 }
 
 .circle-btn {
-  width: 40px;
-  height: 40px;
+  width: 3rem;
+  height: 3rem;
+  min-width: 44px; /* Minimum touch target size */
+  min-height: 44px;
   border-radius: 50%;
-  background-color: #4299e1;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  font-size: 24px;
+  font-size: 1.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
 }
 
-.text-btn {
-  background: none;
-  border: none;
-  color: #666;
-  font-size: 16px;
-  padding: 8px 16px;
-  cursor: pointer;
-}
-
-/* Tabs */
+/* Tabs with proper touch targets */
 .tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background-color: var(--background-color);
+  padding: 0.5rem 0;
+  z-index: 10;
 }
 
 .tab-btn {
   flex: 1;
-  padding: 12px;
+  padding: 0.875rem;
+  min-height: 44px;
   border: none;
   background-color: #edf2f7;
-  color: #4a5568;
+  color: var(--text-secondary);
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .tab-btn.active {
-  background-color: #4299e1;
+  background-color: var(--primary-color);
   color: white;
 }
 
-/* Roster section */
-.roster-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
+/* Roster and player cards */
 .roster-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
+  padding-bottom: calc(5rem + var(--safe-area-inset-bottom));
 }
 
 .player-card {
-  background-color: white;
-  padding: 16px;
-  border-radius: 12px;
+  background-color: var(--card-background);
+  padding: 1rem;
+  border-radius: var(--border-radius-md);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
-.player-card:active {
-  background-color: #f7fafc;
-}
-
-.player-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.player-number {
-  font-weight: bold;
-  color: #4299e1;
-}
-
-.player-stats {
-  display: flex;
-  gap: 16px;
-  color: #666;
-}
-
-/* Goal actions */
+/* Goal actions sheet */
 .goal-actions {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
-  padding: 24px 16px;
+  background-color: var(--card-background);
+  padding: 1.5rem 1rem;
+  padding-bottom: calc(1.5rem + var(--safe-area-inset-bottom));
   border-radius: 24px 24px 0 0;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
   transform: translateY(0);
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
 }
 
 .goal-actions.hidden {
   transform: translateY(100%);
 }
 
-.selected-players {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.selected-player {
-  padding: 12px;
-  background-color: #f7fafc;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
 /* Goals log */
+.goals-log {
+  padding-bottom: calc(5rem + var(--safe-area-inset-bottom));
+}
+
 .goal-entry {
-  background-color: white;
-  padding: 16px;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  background-color: var(--card-background);
+  padding: 1rem;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 0.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
-.goal-time {
-  font-variant-numeric: tabular-nums;
-  color: #666;
-  font-weight: 500;
-}
-
-.goal-details {
-  flex: 1;
-  margin: 0 16px;
-}
-
-.goal-scorer {
-  font-weight: 600;
-}
-
-.goal-assist {
-  color: #666;
-  font-size: 14px;
-}
-
-.delete-btn {
-  background: none;
-  border: none;
-  color: #e53e3e;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 4px;
-  line-height: 1;
-}
-
-/* Dialog */
+/* Dialog improvements */
 dialog {
   border: none;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.player-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 280px;
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin: 1rem;
+  max-width: calc(100% - 2rem);
+  background-color: var(--card-background);
 }
 
 .player-form input {
-  padding: 12px;
+  padding: 0.875rem;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.dialog-buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-
-.confirm-btn {
-  background-color: #4299e1;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.cancel-btn {
-  background-color: #e2e8f0;
-  color: #4a5568;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  min-height: 44px;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* Toast notification */
 .toast {
   position: fixed;
-  top: 24px;
+  top: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #2d3748;
+  background-color: var(--text-primary);
   color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-sm);
   font-weight: 500;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   z-index: 1000;
   opacity: 1;
   transition: opacity 0.3s;
+  max-width: calc(100% - 2rem);
+  text-align: center;
 }
 
-.toast.fade-out {
-  opacity: 0;
+/* Loading spinner */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
 }
 
-/* Tab content */
-.tab-content {
-  display: none;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.tab-content.active {
-  display: block;
-}
-
-/* Media query for larger phones */
+/* Media queries */
 @media (min-width: 390px) {
-  .stopwatch {
-    font-size: 56px;
+  .mobile-container {
+    max-width: 600px;
   }
   
   .player-card {
-    padding: 20px;
+    padding: 1.25rem;
+  }
+}
+
+@media (hover: hover) {
+  .large-btn:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .player-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .mobile-container {
+    padding-bottom: var(--safe-area-inset-bottom);
   }
 }
