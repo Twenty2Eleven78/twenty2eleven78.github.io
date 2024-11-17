@@ -29,9 +29,8 @@
         <div class="card">
           <div class="card-content">
             <span class="card-title">Add Goal</span>
-            <form id="goalForm">
-              <div class="input-field">
-                <label for="goalScorer">Goal Scorer:</label>
+            <form id="goalForm"><label for="goalScorer">Goal Scorer:</label>
+			<div class="input-field">
                 <select id="goalScorer" required>
                   <option value="" disabled selected>Select a scorer</option>
                   <option value="AS">AS</option>
@@ -51,9 +50,9 @@
                   <option value="VAI">VAI</option>
                 </select>
               </div>
+			  <label for="goalAssist">Goal Assist:</label>
               <div class="input-field">
-                <label for="goalAssist">Goal Assist:</label>
-                <select id="goalAssist">
+                  <select id="goalAssist">
                   <option value="" selected>Select an assistant</option>
                   <option value="AS">AS</option>
                   <option value="ARO">ARO</option>
