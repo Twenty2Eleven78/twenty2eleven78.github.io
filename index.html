@@ -2,177 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#4299e1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6200ee">
     <title>Game Goal Tracker</title>
+    
+    <!-- Material Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/4.0.0/font/MaterialIcons-Regular.ttf" rel="stylesheet">
+    <!-- Roboto Font -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/roboto/2.0.0/roboto.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
-    <!-- App Icons -->
-    <link rel="apple-touch-icon" href="/api/placeholder/180/180">
-    <link rel="icon" type="image/png" href="/api/placeholder/32/32">
-    
-    <!-- PWA Meta Tags -->
-    <meta name="description" content="Track game goals and player statistics in real-time">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Goal Tracker">
 </head>
 <body>
-    <!-- Loading State -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-    </div>
+    <!-- App Bar -->
+    <header class="app-bar">
+        <span class="material-icons">sports_soccer</span>
+        <h1>Goal Tracker</h1>
+    </header>
 
-    <!-- Main App Container -->
-    <main class="mobile-container" id="mainContent">
-        <!-- Timer Section -->
+    <!-- Main Content -->
+    <main class="mobile-container">
+        <!-- Timer Card -->
         <section class="timer-section">
             <div id="stopwatch" class="stopwatch">00:00:00</div>
-            <button id="startPauseButton" class="large-btn" aria-label="Start or pause timer">
+            <button id="startPauseButton" class="md-button contained ripple">
                 Start
             </button>
         </section>
 
-        <!-- Player Management Section -->
-        <section class="player-section">
-            <!-- Tabs -->
-            <div class="tabs" role="tablist">
-                <button 
-                    class="tab-btn active" 
-                    role="tab" 
-                    aria-selected="true"
-                    aria-controls="rosterTab"
-                    data-tab="roster">
-                    Roster
-                </button>
-                <button 
-                    class="tab-btn" 
-                    role="tab" 
-                    aria-selected="false"
-                    aria-controls="goalsTab"
-                    data-tab="goals">
-                    Goals
-                </button>
-            </div>
+        <!-- Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active ripple" data-tab="roster">
+                Roster
+            </button>
+            <button class="tab-btn ripple" data-tab="goals">
+                Goals
+            </button>
+        </nav>
 
-            <!-- Roster Tab -->
-            <div id="rosterTab" 
-                class="tab-content active" 
-                role="tabpanel" 
-                aria-labelledby="rosterTab">
-                <div class="roster-header">
-                    <h2>Team Roster</h2>
-                    <button 
-                        id="addPlayerBtn" 
-                        class="circle-btn" 
-                        aria-label="Add new player">
-                        +
-                    </button>
-                </div>
-                <div id="rosterList" class="roster-list">
-                    <!-- Players will be dynamically added here -->
-                </div>
-            </div>
-
-            <!-- Goals Tab -->
-            <div id="goalsTab" 
-                class="tab-content" 
-                role="tabpanel" 
-                aria-labelledby="goalsTab">
-                <div id="log" class="goals-log">
-                    <!-- Goals will be dynamically added here -->
-                </div>
+        <!-- Content Sections -->
+        <section id="rosterTab" class="tab-content active">
+            <div id="rosterList" class="roster-list">
+                <!-- Players will be added here -->
             </div>
         </section>
 
-        <!-- Goal Actions Sheet -->
-        <div id="goalActions" class="goal-actions hidden">
+        <section id="goalsTab" class="tab-content">
+            <div id="log" class="goals-log">
+                <!-- Goals will be added here -->
+            </div>
+        </section>
+
+        <!-- FAB Button -->
+        <button id="addPlayerBtn" class="md-fab ripple">
+            <span class="material-icons">add</span>
+        </button>
+
+        <!-- Bottom Sheet for Goal Actions -->
+        <div id="goalActions" class="bottom-sheet">
             <div class="selected-players">
-                <div id="selectedScorer" class="selected-player" role="button" tabindex="0">
-                    Select Scorer
+                <div id="selectedScorer" class="md-field">
+                    <input type="text" readonly placeholder=" ">
+                    <label>Select Scorer</label>
                 </div>
-                <div id="selectedAssist" class="selected-player" role="button" tabindex="0">
-                    Select Assist
+                <div id="selectedAssist" class="md-field">
+                    <input type="text" readonly placeholder=" ">
+                    <label>Select Assist</label>
                 </div>
             </div>
-            <button id="confirmGoal" class="large-btn">Record Goal</button>
-            <button id="cancelGoal" class="text-btn">Cancel</button>
+            <button id="confirmGoal" class="md-button contained ripple">Record Goal</button>
+            <button id="cancelGoal" class="md-button outlined ripple">Cancel</button>
         </div>
 
         <!-- Add Player Dialog -->
-        <dialog id="playerDialog" aria-labelledby="dialogTitle">
-            <form method="dialog" class="player-form">
-                <h3 id="dialogTitle">Add New Player</h3>
-                <div class="form-group">
+        <dialog class="md-dialog">
+            <h2>Add New Player</h2>
+            <form id="playerForm">
+                <div class="md-field">
+                    <input type="text" id="playerName" required placeholder=" ">
                     <label for="playerName">Player Name</label>
-                    <input 
-                        type="text" 
-                        id="playerName" 
-                        required 
-                        autocomplete="off"
-                        pattern="[A-Za-z\s]+"
-                        minlength="2"
-                        maxlength="30"
-                        placeholder="Enter player name">
                 </div>
-                <div class="form-group">
+                <div class="md-field">
+                    <input type="number" id="playerNumber" required placeholder=" ">
                     <label for="playerNumber">Jersey Number</label>
-                    <input 
-                        type="number" 
-                        id="playerNumber" 
-                        required 
-                        min="0"
-                        max="99"
-                        placeholder="#">
                 </div>
-                <div class="dialog-buttons">
-                    <button type="button" id="cancelDialog" class="cancel-btn">Cancel</button>
-                    <button type="submit" class="confirm-btn">Add Player</button>
+                <div class="dialog-actions">
+                    <button type="button" class="md-button outlined ripple" data-dismiss="dialog">Cancel</button>
+                    <button type="submit" class="md-button contained ripple">Add Player</button>
                 </div>
             </form>
         </dialog>
 
-        <!-- Reset Game Dialog -->
-        <dialog id="resetDialog" aria-labelledby="resetDialogTitle">
-            <h3 id="resetDialogTitle">Reset Game?</h3>
+        <!-- Reset Dialog -->
+        <dialog class="md-dialog" id="resetDialog">
+            <h2>Reset Game</h2>
             <p>This will clear all goals and reset the timer. This action cannot be undone.</p>
-            <div class="dialog-buttons">
-                <button type="button" id="cancelReset" class="cancel-btn">Cancel</button>
-                <button type="button" id="confirmReset" class="confirm-btn">Reset Game</button>
+            <div class="dialog-actions">
+                <button class="md-button outlined ripple" data-dismiss="dialog">Cancel</button>
+                <button id="confirmReset" class="md-button contained ripple">Reset</button>
             </div>
         </dialog>
     </main>
 
-    <!-- Toast Container -->
-    <div id="toastContainer" role="alert" aria-live="polite"></div>
+    <!-- Snackbar -->
+    <div class="snackbar">
+        <span id="snackbarText"></span>
+        <button class="md-button outlined ripple">Dismiss</button>
+    </div>
 
     <!-- Templates -->
     <template id="playerCardTemplate">
-        <div class="player-card" data-player-id="">
+        <div class="player-card ripple">
             <div class="player-info">
                 <span class="player-number"></span>
                 <span class="player-name"></span>
             </div>
             <div class="player-stats">
-                <span class="goals" title="Goals">⚽ 0</span>
-                <span class="assists" title="Assists">👟 0</span>
+                <span class="goals">
+                    <span class="material-icons">sports_soccer</span>
+                    <span class="count">0</span>
+                </span>
+                <span class="assists">
+                    <span class="material-icons">emoji_events</span>
+                    <span class="count">0</span>
+                </span>
             </div>
         </div>
     </template>
 
-    <template id="goalEntryTemplate">
-        <div class="goal-entry">
-            <div class="goal-time"></div>
-            <div class="goal-details">
-                <div class="goal-scorer"></div>
-                <div class="goal-assist"></div>
-            </div>
-            <button class="delete-btn" aria-label="Delete goal">×</button>
-        </div>
-    </template>
-
-    <!-- Scripts -->
     <script src="script.js" defer></script>
 </body>
 </html>
