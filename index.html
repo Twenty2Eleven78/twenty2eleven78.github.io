@@ -10,14 +10,19 @@
   </header>
   <main>
     <div class="stopwatch-container">
-    <button id="startPauseButton">Start</button> <div id="stopwatch">00:00:00</div>
-    </div>
+	<div id="stopwatch">00:00:00</div>
+	<button id="startPauseButton">Start</button>
+	</div>
     <div class="goal-input-container">
       <label for="goalScorer">Goal Scorer:</label>
-      <input type="text" id="goalScorer" placeholder="Enter goal scorer">
-      <br>
-      <label for="goalAssist">Goal Assist:</label>
-      <input type="text" id="goalAssist" placeholder="Enter goal assist">
+		<select id="goalScorer">
+			<option value="">Select a scorer</option>
+		</select>
+		<br>
+	  <label for="goalAssist">Goal Assist:</label>
+		<select id="goalAssist">
+			<option value="">Select an assistant</option>
+		</select>
     </div>
     <button id="goalButton">Add Goal</button>
     <div id="log"></div>
