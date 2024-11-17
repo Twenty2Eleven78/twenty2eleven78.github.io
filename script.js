@@ -50,6 +50,8 @@ goalButton.addEventListener('click', () => {
   }
 });
 
+let resetClickTime = null;
+
 resetButton.addEventListener('click', () => {
   showConfirmationModal('Are you sure you want to reset the stopwatch and log data?', () => {
     clearInterval(intervalId);
