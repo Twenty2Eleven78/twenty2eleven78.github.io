@@ -1,9 +1,30 @@
+const stopwatchDisplay = document.getElementById('stopwatch');
 const goalButton = document.getElementById('goalButton');
 const goalScorer = document.getElementById('goalScorer');
 const goalAssist = document.getElementById('goalAssist');
 const resetButton = document.getElementById('resetButton');
 const log = document.getElementById('log');
 
+let seconds = 0;
+let intervalId;
+
+function startStopwatch() {
+  intervalId = setInterval(() => {
+    seconds++;
+    const formattedTime = formatTime(seconds);
+    stopwatchDisplay.textContent = formattedTime;
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return 
+ `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2,'0')}`;
+}
+
+startStopwatch();
 let data = [];
 
 goalButton.addEventListener('click', () => {
@@ -23,6 +44,9 @@ goalButton.addEventListener('click', () => {
 });
 
 resetButton.addEventListener('click', () => {
+  clearInterval(intervalId);
+  seconds = 0;
+  stopwatchDisplay.textContent = '00:00:00';
   data = [];
   updateLog();
 });
