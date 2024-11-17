@@ -88,7 +88,7 @@ try {
 
 // Retrieve data from local storage on page load
 try {
-  const storedTime = sessionStorage.getItem('stopwatchTime';
+  const storedTime = sessionStorage.getItem('stopwatchTime');
   if (storedTime) {
     data = JSON.parse(storedTime);
     updateLog();
