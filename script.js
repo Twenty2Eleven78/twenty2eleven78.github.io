@@ -98,9 +98,9 @@ try {
 }
 
 try {
-	const storedDatalog = localStorage.getItem('goalTrackerData');
-  if (storedDataTime) {
-    data = JSON.parse(storedDatalog);
+	const storedDataGoals = localStorage.getItem('goalTrackerData');
+  if (storedDataGoals) {
+    data = JSON.parse(storedDataGoals);
     updateLog();
   }
 } catch (error) {
