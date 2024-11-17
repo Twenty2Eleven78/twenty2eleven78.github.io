@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#8B0000">
     <title>Game Goal Tracker</title>
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=sports_soccer" />
@@ -39,7 +38,8 @@
         <!-- Content Sections -->
         <section id="rosterTab" class="tab-content active">
             <div id="rosterList" class="roster-list">
-                <!-- Players will be added here -->
+                <button id="addPlayerBtn" class="md-fab ripple">
+        <span class="material-icons">add</span>
             </div>
         </section>
 
@@ -48,11 +48,6 @@
                 <!-- Goals will be added here -->
             </div>
         </section>
-
-        <!-- FAB Button -->
-        <button id="addPlayerBtn" class="md-fab ripple">
-            <span class="material-icons">add</span>
-        </button>
 
         <!-- Bottom Sheet for Goal Actions -->
         <div id="goalActions" class="bottom-sheet">
