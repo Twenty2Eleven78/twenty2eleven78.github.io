@@ -68,7 +68,6 @@ function updateLog() {
     const { timestamp, goalScorerName, goalAssistName } = entry;
     const logEntry = `${timestamp}: **Goal:** ${goalScorerName}, **Assist:** ${goalAssistName}`;
     log.innerHTML += `<p>${logEntry}</p>`;
-	localStorage.setItem('logTrackerData', text)
   });
 }
 
