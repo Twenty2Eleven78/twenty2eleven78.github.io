@@ -1,151 +1,315 @@
-/* Base styles */
-body {
-  font-family: Roboto, sans-serif;
+/* Base styles and reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
   line-height: 1.6;
 }
 
-header {
-  background-color: #8B0000;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-}
-
-main {
-  padding: 1rem;
-  max-width: 1200px;
+.mobile-container {
+  max-width: 600px;
   margin: 0 auto;
+  padding: 16px;
 }
 
-/* Button styles */
-button {
-  background-color: #8B0000;
+/* Timer section */
+.timer-section {
+  text-align: center;
+  padding: 24px 0;
+  background-color: #fff;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stopwatch {
+  font-size: 48px;
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px;
+  color: #2d3748;
+}
+
+/* Buttons */
+.large-btn {
+  background-color: #4299e1;
   color: white;
   border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 0.5rem;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #660000;
-}
-
-/* Form controls */
-select, input {
-  padding: 0.75rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  width: 100%;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  width: 80%;
   max-width: 300px;
-  margin: 0.5rem 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-/* Stopwatch container */
-.stopwatch-container {
+.large-btn:active {
+  background-color: #3182ce;
+  transform: scale(0.98);
+}
+
+.circle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4299e1;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin: 1rem 0;
+  justify-content: center;
 }
 
-@media (min-width: 768px) {
-  .stopwatch-container {
-    flex-direction: row;
-    justify-content: center;
-  }
+.text-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
 }
 
-#stopwatch {
-  font-size: 2rem;
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  min-width: 200px;
-  text-align: center;
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-/* Goal input container */
-.goal-input-container {
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background-color: #edf2f7;
+  color: #4a5568;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background-color: #4299e1;
+  color: white;
+}
+
+/* Roster section */
+.roster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.roster-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin: 1.5rem 0;
+  gap: 12px;
 }
 
-@media (min-width: 768px) {
-  .goal-input-container {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.player-card {
+  background-color: white;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
-/* Log styles */
-#log {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  max-height: 400px;
-  overflow-y: auto;
+.player-card:active {
+  background-color: #f7fafc;
 }
 
-#log p {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  border-bottom: 1px solid #eee;
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Small screens */
-@media (max-width: 480px) {
-  header {
-    padding: 0.75rem;
+.player-number {
+  font-weight: bold;
+  color: #4299e1;
+}
+
+.player-stats {
+  display: flex;
+  gap: 16px;
+  color: #666;
+}
+
+/* Goal actions */
+.goal-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 24px 16px;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
+}
+
+.goal-actions.hidden {
+  transform: translateY(100%);
+}
+
+.selected-players {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selected-player {
+  padding: 12px;
+  background-color: #f7fafc;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Goals log */
+.goal-entry {
+  background-color: white;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.goal-time {
+  font-variant-numeric: tabular-nums;
+  color: #666;
+  font-weight: 500;
+}
+
+.goal-details {
+  flex: 1;
+  margin: 0 16px;
+}
+
+.goal-scorer {
+  font-weight: 600;
+}
+
+.goal-assist {
+  color: #666;
+  font-size: 14px;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+/* Dialog */
+dialog {
+  border: none;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.player-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 280px;
+}
+
+.player-form input {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.confirm-btn {
+  background-color: #4299e1;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2d3748;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.toast.fade-out {
+  opacity: 0;
+}
+
+/* Tab content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Media query for larger phones */
+@media (min-width: 390px) {
+  .stopwatch {
+    font-size: 56px;
   }
   
-  #stopwatch {
-    font-size: 1.5rem;
-    min-width: 150px;
-  }
-  
-  button {
-    width: 100%;
-    margin: 0.25rem 0;
-  }
-  
-  select, input {
-    max-width: 100%;
-  }
-}
-
-/* Medium screens */
-@media (min-width: 481px) and (max-width: 767px) {
-  button {
-    width: auto;
-  }
-  
-  .goal-input-container {
-    align-items: stretch;
-  }
-}
-
-/* Print styles */
-@media print {
-  button {
-    display: none;
-  }
-  
-  #log {
-    max-height: none;
-    overflow: visible;
+  .player-card {
+    padding: 20px;
   }
 }
