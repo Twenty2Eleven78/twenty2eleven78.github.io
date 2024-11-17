@@ -6,7 +6,7 @@ const STATE = {
   data: [],
   startTimestamp: null
 };
-
+ 
 // DOM Elements
 const elements = {
   stopwatch: document.getElementById('stopwatch'),
