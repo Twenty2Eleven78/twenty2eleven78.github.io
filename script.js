@@ -173,7 +173,7 @@ function formatLogForWhatsApp() {
   const goals = STATE.data
     .sort((a, b) => a.rawTime - b.rawTime)
     .map(({ timestamp, goalScorerName, goalAssistName }) => 
-      `&#127942 ⚽ ${timestamp} - Goal: ${goalScorerName}, Assist: ${goalAssistName}`
+      `🏆 ${timestamp} - Goal: ${goalScorerName}, Assist: ${goalAssistName}`
     )
     .join('\n');
     
@@ -220,7 +220,6 @@ function shareToWhatsApp() {
   const whatsappURL = `https://wa.me/?text=${formattedLog}`;
   window.open(whatsappURL, '_blank');
 }
-
 
 // Initialize application
 function initializeApp() {
