@@ -166,46 +166,6 @@ function resetTracker() {
   Storage.clear();
 }
 
-// Initialize application
-function initializeApp() {
-	
-  // Load saved data
-  STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
-  STATE.startTimestamp = Storage.load(STORAGE_KEYS.START_TIMESTAMP, null);
-  STATE.seconds = Storage.load(STORAGE_KEYS.ELAPSED_TIME, 0);
-  STATE.data = Storage.load(STORAGE_KEYS.GOALS, []);
-  
-  // If timer was running, calculate elapsed time and restart
-  if (STATE.isRunning && STATE.startTimestamp) {
-    const currentTime = Date.now();
-    const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000);
-    STATE.seconds = elapsedSeconds;
-    startStopwatch();
-  }
- 
-  // Update UI with saved data
-  updateStopwatchDisplay();
-  updateLog();
-  elements.startPauseButton.textContent = STATE.isRunning ? "Pause" : "Start";
-  
-  // Initialize Materialize components
-  M.FormSelect.init(document.querySelectorAll('select'));
-}
-
-// Event Listeners
-elements.startPauseButton.addEventListener('click', startStopwatch);
-elements.goalForm.addEventListener('submit', addGoal);
-elements.resetButton.addEventListener('click', resetTracker);
-document.addEventListener('DOMContentLoaded', initializeApp);
-elements.shareButton.addEventListener('click', shareToWhatsApp);
-
-// Handle page visibility changes
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && STATE.isRunning) {
-    updateStopwatchDisplay();
-  }
-});
-
 function formatLogForWhatsApp() {
   const gameTime = formatTime(STATE.seconds);
   const header = `⚽ Match Summary (Time: ${gameTime})\n\n`;
@@ -261,3 +221,44 @@ function shareToWhatsApp() {
   const whatsappURL = `https://wa.me/?text=${formattedLog}`;
   window.open(whatsappURL, '_blank');
 }
+
+
+// Initialize application
+function initializeApp() {
+	
+  // Load saved data
+  STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
+  STATE.startTimestamp = Storage.load(STORAGE_KEYS.START_TIMESTAMP, null);
+  STATE.seconds = Storage.load(STORAGE_KEYS.ELAPSED_TIME, 0);
+  STATE.data = Storage.load(STORAGE_KEYS.GOALS, []);
+  
+  // If timer was running, calculate elapsed time and restart
+  if (STATE.isRunning && STATE.startTimestamp) {
+    const currentTime = Date.now();
+    const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000);
+    STATE.seconds = elapsedSeconds;
+    startStopwatch();
+  }
+ 
+  // Update UI with saved data
+  updateStopwatchDisplay();
+  updateLog();
+  elements.startPauseButton.textContent = STATE.isRunning ? "Pause" : "Start";
+  
+  // Initialize Materialize components
+  M.FormSelect.init(document.querySelectorAll('select'));
+}
+
+// Event Listeners
+elements.startPauseButton.addEventListener('click', startStopwatch);
+elements.goalForm.addEventListener('submit', addGoal);
+elements.resetButton.addEventListener('click', resetTracker);
+document.addEventListener('DOMContentLoaded', initializeApp);
+elements.shareButton.addEventListener('click', shareToWhatsApp);
+
+// Handle page visibility changes
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && STATE.isRunning) {
+    updateStopwatchDisplay();
+  }
+});
