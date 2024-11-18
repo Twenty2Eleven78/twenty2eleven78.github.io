@@ -15,9 +15,9 @@ const elements = {
   goalScorer: document.getElementById('goalScorer'),
   goalAssist: document.getElementById('goalAssist'),
   resetButton: document.getElementById('resetButton'),
+  shareButton: document.getElementById('shareButton'),
   log: document.getElementById('log'),
-  goalForm: document.getElementById('goalForm'),
-  shareButton: document.getElementById('sharebutton')
+  goalForm: document.getElementById('goalForm')
 };
 
 // Constants
@@ -216,7 +216,6 @@ function shareToWhatsApp() {
     M.toast({html: 'No goals to share yet!'});
     return;
   }
-  
   const formattedLog = formatLogForWhatsApp();
   const whatsappURL = `https://wa.me/?text=${formattedLog}`;
   window.open(whatsappURL, '_blank');
