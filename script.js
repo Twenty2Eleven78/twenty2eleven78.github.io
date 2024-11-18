@@ -254,7 +254,7 @@ elements.startPauseButton.addEventListener('click', startStopwatch);
 elements.goalForm.addEventListener('submit', addGoal);
 elements.resetButton.addEventListener('click', resetTracker);
 document.addEventListener('DOMContentLoaded', initializeApp);
-elements.shareButton..addEventListener('click', shareToWhatsApp);
+elements.shareButton.addEventListener('click', shareToWhatsApp);
 
 // Handle page visibility changes
 document.addEventListener('visibilitychange', () => {
