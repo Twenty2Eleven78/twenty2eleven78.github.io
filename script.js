@@ -17,7 +17,7 @@ const elements = {
   resetButton: document.getElementById('resetButton'),
   log: document.getElementById('log'),
   goalForm: document.getElementById('goalForm')
-  shareButton: document.createElement('button')
+  shareButton: document.getElementById('sharebutton')
 };
 
 // Constants
@@ -169,10 +169,6 @@ function resetTracker() {
 // Initialize application
 function initializeApp() {
 	
-  // Add share button to UI
-  createShareButton();	
-	
-	
   // Load saved data
   STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
   STATE.startTimestamp = Storage.load(STORAGE_KEYS.START_TIMESTAMP, null);
@@ -186,9 +182,7 @@ function initializeApp() {
     STATE.seconds = elapsedSeconds;
     startStopwatch();
   }
-  
-
-  
+ 
   // Update UI with saved data
   updateStopwatchDisplay();
   updateLog();
@@ -203,6 +197,7 @@ elements.startPauseButton.addEventListener('click', startStopwatch);
 elements.goalForm.addEventListener('submit', addGoal);
 elements.resetButton.addEventListener('click', resetTracker);
 document.addEventListener('DOMContentLoaded', initializeApp);
+elements.shareButton.addEventListener('click', shareToWhatsApp);
 
 // Handle page visibility changes
 document.addEventListener('visibilitychange', () => {
@@ -253,25 +248,6 @@ function generateStats() {
     .join(', ');
   
   return `📊 Stats:\nTop Scorers: ${topScorers}\nTop Assists: ${topAssists}`;
-}
-
-// Create and add share button to UI
-function createShareButton() {
-  const buttonContainer = document.createElement('div');
-  buttonContainer.className = 'row';
-  
-  const buttonCol = document.createElement('div');
-  buttonCol.className = 'col s12';
-  
-  elements.shareButton.className = 'btn waves-effect waves-light green';
-  elements.shareButton.innerHTML = '<i class="material-icons left">share</i>Share to WhatsApp';
-  elements.shareButton.addEventListener('click', shareToWhatsApp);
-  
-  buttonCol.appendChild(elements.shareButton);
-  buttonContainer.appendChild(buttonCol);
-  
-  // Insert before the reset button's row
-  elements.resetButton.closest('.row').before(buttonContainer);
 }
 
 // Share to WhatsApp function
