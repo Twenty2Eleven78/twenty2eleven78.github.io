@@ -16,7 +16,7 @@ const elements = {
   goalAssist: document.getElementById('goalAssist'),
   resetButton: document.getElementById('resetButton'),
   log: document.getElementById('log'),
-  goalForm: document.getElementById('goalForm')
+  goalForm: document.getElementById('goalForm'),
   shareButton: document.getElementById('sharebutton')
 };
 
