@@ -230,16 +230,13 @@ function initializeApp() {
   STATE.seconds = Storage.load(STORAGE_KEYS.ELAPSED_TIME, 0);
   STATE.data = Storage.load(STORAGE_KEYS.GOALS, []);
   
-  // Automatically start timer if it was running before refresh
-  if (STATE.startTimestamp) {
+  // If timer was running, calculate elapsed time and restart
+  if (STATE.isRunning && STATE.startTimestamp) {
     const currentTime = Date.now();
-    const timeSinceStart = Math.floor((currentTime - STATE.startTimestamp) / 1000);
-    STATE.seconds += timeSinceStart;
-    STATE.startTimestamp = currentTime;
-    STATE.isRunning = true;
+    const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000);
+    STATE.seconds = elapsedSeconds;
     startStopwatch();
   }
-
  
   // Update UI with saved data
   updateStopwatchDisplay();
