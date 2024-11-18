@@ -67,7 +67,7 @@ function getCurrentSeconds() {
   if (!STATE.isRunning || !STATE.startTimestamp) return STATE.seconds;
   
   const currentTime = Date.now();
-  const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000);
+  const elapsedSeconds = Math.floor((currentTime - STATE.startTimestamp) / 1000) + STATE.seconds;
   return elapsedSeconds;
 }
 
@@ -84,7 +84,7 @@ function startStopwatch() {
     // Starting the timer
     STATE.isRunning = true;
     if (!STATE.startTimestamp) {
-      STATE.startTimestamp = Date.now() - (STATE.seconds * 1000);
+      STATE.startTimestamp = Date.now();
     }
     STATE.intervalId = setInterval(updateStopwatchDisplay, 100);
   } else {
