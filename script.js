@@ -173,7 +173,7 @@ function formatLogForWhatsApp() {
   const goals = STATE.data
     .sort((a, b) => a.rawTime - b.rawTime)
     .map(({ timestamp, goalScorerName, goalAssistName }) => 
-      `🎯 ${timestamp} - Goal: ${goalScorerName}, Assist: ${goalAssistName}`
+      `&#127942 ⚽ ${timestamp} - Goal: ${goalScorerName}, Assist: ${goalAssistName}`
     )
     .join('\n');
     
