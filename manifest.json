@@ -5,7 +5,7 @@
     "background_color": "#fff",
     "display": "standalone",
     "scope": "/",
-    "start_url": "https://tenty2eleven78.github.io/",
+    "start_url": "/",
     "description": "Goal Tracker",
     "orientation": "any",
     "icons": [
