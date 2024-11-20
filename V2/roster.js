@@ -25,9 +25,7 @@ const RosterManager = (function() {
 
   function getDefaultRoster() {
     return [
-      'A.Seaman', 'A-R.Obidi', 'D.Peacock', 'E.Doyle', 'E.Van-Kerro',
-      'E.Mutiti', 'F.Asadi', 'F.Kendall', 'H.Strowthers', 'M.Finch',
-      'M.Luttwak', 'R.Azar', 'S.Smith', 'T.Rushmer', 'V.Aig-Imoru'
+      'Player1', 'Player2'
     ];
   }
 
