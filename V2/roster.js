@@ -36,7 +36,8 @@ const RosterManager = (function() {
     // Initialize roster
     init() {
       roster = loadRoster();
-      this.updateUI();
+      this.updateSelects();
+      this.updateRosterList();
       this.bindEvents();
     },
 
@@ -45,43 +46,8 @@ const RosterManager = (function() {
       return [...roster];
     },
 
-    // Add a new player
-    addPlayer(name) {
-      if (!name) return false;
-      
-      // Trim and validate name
-      const trimmedName = name.trim();
-      if (!trimmedName) return false;
-
-      // Check for duplicates
-      if (roster.includes(trimmedName)) {
-        M.toast({html: 'Player already exists!'});
-        return false;
-      }
-
-      // Add player and sort
-      roster.push(trimmedName);
-      roster.sort();
-      saveRoster();
-      this.updateUI();
-      return true;
-    },
-
-    // Remove a player
-    removePlayer(name) {
-      const index = roster.indexOf(name);
-      if (index > -1) {
-        roster.splice(index, 1);
-        saveRoster();
-        this.updateUI();
-        return true;
-      }
-      return false;
-    },
-
-    // Update UI elements
-    updateUI() {
-      // Update player select dropdowns
+    // Update select dropdowns
+    updateSelects() {
       const goalScorerSelect = document.getElementById('goalScorer');
       const goalAssistSelect = document.getElementById('goalAssist');
       
@@ -113,8 +79,10 @@ const RosterManager = (function() {
         M.FormSelect.init(goalScorerSelect);
         M.FormSelect.init(goalAssistSelect);
       }
+    },
 
-      // Update roster list in modal
+    // Update roster list in modal
+    updateRosterList() {
       const rosterList = document.getElementById('rosterList');
       if (rosterList) {
         rosterList.innerHTML = roster
@@ -131,6 +99,42 @@ const RosterManager = (function() {
           `)
           .join('');
       }
+    },
+
+    // Add a new player
+    addPlayer(name) {
+      if (!name) return false;
+      
+      // Trim and validate name
+      const trimmedName = name.trim();
+      if (!trimmedName) return false;
+
+      // Check for duplicates
+      if (roster.includes(trimmedName)) {
+        M.toast({html: 'Player already exists!'});
+        return false;
+      }
+
+      // Add player and sort
+      roster.push(trimmedName);
+      roster.sort();
+      saveRoster();
+      this.updateSelects();
+      this.updateRosterList();
+      return true;
+    },
+
+    // Remove a player
+    removePlayer(name) {
+      const index = roster.indexOf(name);
+      if (index > -1) {
+        roster.splice(index, 1);
+        saveRoster();
+        this.updateSelects();
+        this.updateRosterList();
+        return true;
+      }
+      return false;
     },
 
     // Bind event listeners

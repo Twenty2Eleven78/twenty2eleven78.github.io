@@ -224,6 +224,13 @@ function shareToWhatsApp() {
 // Initialize application
 function initializeApp() {
 	
+	  // Initialize Materialize Modal and Form Select
+  M.Modal.init(document.getElementById('rosterModal'));
+  M.FormSelect.init(document.querySelectorAll('select'));
+  
+    // Initialize roster
+  RosterManager.init();
+	
   // Load saved data
   STATE.isRunning = Storage.load(STORAGE_KEYS.IS_RUNNING, false);
   STATE.startTimestamp = Storage.load(STORAGE_KEYS.START_TIMESTAMP, null);
